@@ -3,10 +3,31 @@ import os
 from flask_cors import CORS, cross_origin
 from src.cnnClassifier.utils import decodeImage
 from predict import PredictionPipeline
-
+from src.cnnClassifier.logger import logging
+from src.cnnClassifier.exception import CustomException
+from ensure import ensure_annotations
+import base64
 
 os.putenv('LANG', 'en_US.UTF-8')
 os.putenv('LC_ALL', 'en_US.UTF-8')
+
+@ensure_annotations
+def decodeImage(imgstring, fileName):
+    """
+    to decode the binary string into normal form.
+    
+    Returns:
+        Return the decoded string.    
+    """
+    try:
+        imgdata = base64.b64decode(imgstring)
+        with open(fileName, "wb") as f:
+            f.write(imgdata)
+            f.close()
+            logging.info("image data decoded successfully using decodeImage function")
+    except Exception as e:
+        logging.info("Error in performing operation decodeImage")
+        raise CustomException(e,sys)
 
 app = Flask(__name__)
 CORS(app)
