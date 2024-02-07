@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template
 import os
 from flask_cors import CORS, cross_origin
 from src.cnnClassifier.utils import decodeImage
-from src.cnnClassifier.pipeline.predict import PredictionPipeline
+from predict import PredictionPipeline
 
 
 os.putenv('LANG', 'en_US.UTF-8')
